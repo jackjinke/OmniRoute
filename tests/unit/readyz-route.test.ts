@@ -52,6 +52,8 @@ test("/readyz is omitted from the centralized auth proxy matcher", () => {
 test("/readyz re-exports the /healthz handlers (no second lifecycle)", () => {
   const source = fs.readFileSync("src/app/readyz/route.ts", "utf8");
   assert.match(source, /from ["']\.\.\/healthz\/route["']/);
+  assert.match(source, /export const dynamic = ["']force-dynamic["'];/);
+  assert.doesNotMatch(source, /export\s*\{[^}]*\bdynamic\b[^}]*\}\s*from/);
   assert.equal(/monitoring/i.test(source), false);
   assert.equal(/sqlite/i.test(source), false);
 });
